@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" data-native="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Theme + sound pill · Playground</title>
+  <meta name="description" content="One switch for light/dark and sound, shared by every page of a site.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="nv-prefs.js"></script>
+  <link rel="stylesheet" href="nv-prefs.css">
+  <style>
+    :root{--bg:#f4f4f4;--card:#fff;--ink:#2b3234;--ink2:#585e5e;--line:#b4c4c5;--accent:#1D8757;--verve:#67ff56}
+    :root[data-theme="dark"]{--bg:#2b3234;--card:#202627;--ink:#f4f4f4;--ink2:#b4c4c5;--line:#585e5e;--accent:#67ff56}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 "Neue Hans Kendrick","Outfit",system-ui,sans-serif;transition:background .25s,color .25s}
+    main{max-width:720px;margin:0 auto;padding:96px 16px 64px}
+    .back{font-size:14px;color:var(--ink2);text-decoration:none}
+    .back:hover,.back:focus-visible{color:var(--accent)}
+    .eyebrow{display:block;margin-top:40px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2)}
+    h1{font:400 clamp(34px,6vw,52px)/1.1 "TT Barrels","Newsreader",Georgia,serif;margin:10px 0 18px}
+    p{margin:0 0 16px;color:var(--ink2);max-width:60ch}
+    .card{margin-top:32px;padding:24px;border:1px solid var(--line);border-radius:26px;background:var(--card)}
+    .card h2{font:600 15px/1.3 inherit;margin:0 0 6px;color:var(--ink)}
+    .state{font-variant-numeric:tabular-nums;color:var(--ink)}
+    code{font:500 14px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent)}
+    button.demo{margin-top:12px;min-height:48px;padding:0 22px;border:1.5px solid var(--ink);border-radius:999px;background:transparent;color:var(--ink);font:600 15px/1 inherit;cursor:pointer}
+    button.demo:focus-visible{outline:2px solid var(--verve);outline-offset:3px}
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="../../">← Playground</a>
+    <span class="eyebrow">Interaction · from natvernier.com</span>
+    <h1>One switch for light, dark and sound.</h1>
+    <p>The pill in the top right corner is the whole component. The first visit follows the device setting. A choice is remembered. Sound starts off and stays off until the visitor turns it on, for every page and every game.</p>
+
+    <section class="card" aria-live="polite">
+      <h2>Current state</h2>
+      <p class="state">Theme: <code data-out="theme"></code> · designed as <code data-out="native"></code> · <code>data-nv</code> = <code data-out="nv"></code></p>
+      <p class="state">Sound: <code data-out="sound"></code></p>
+    </section>
+
+    <section class="card">
+      <h2>The sound gate</h2>
+      <p>This button calls <code>new Audio(…).play()</code> and knows nothing about the setting. With sound off it stays silent, because the gate sits on <code>HTMLMediaElement.prototype.play</code>.</p>
+      <button class="demo" type="button" data-play>Play a click</button>
+    </section>
+  </main>
+  <script>
+    (function () {
+      var o = function (k) { return document.querySelector('[data-out="' + k + '"]'); };
+      function show() {
+        o('theme').textContent = NV.theme();
+        o('native').textContent = NV.native;
+        o('nv').textContent = '"' + (document.documentElement.getAttribute('data-nv') || '') + '"';
+        o('sound').textContent = NV.sound() ? 'on' : 'off';
+      }
+      addEventListener('nv:theme', show); addEventListener('nv:sound', show); show();
+      var clip = 'https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/693b0fe59ed687420c5e06bc_e4502bd5b06d346b0477d2b4262f4f4c_open.mp3';
+      document.querySelector('[data-play]').addEventListener('click', function () {
+        var a = new Audio(clip); a.volume = .3; var p = a.play(); if (p && p.catch) p.catch(function () {});
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+/* SPDX-License-Identifier: MIT · (c) 2026 Nathalie Vernier · https://github.com/natvernier/playground */
+/* runner speed control */
+.nv-speed{align-self:center}
+.nv-speed button{width:44px;height:44px}
+.nv-speed svg{width:22px;height:22px}

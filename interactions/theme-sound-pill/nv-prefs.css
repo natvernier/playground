@@ -1,0 +1,14 @@
+/* SPDX-License-Identifier: MIT · (c) 2026 Nathalie Vernier · https://github.com/natvernier/playground */
+/* nv-prefs pill · fixed top right, glass, 36px targets, verve marks the active state */
+.nv-prefs{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:9990;display:flex;align-items:center;gap:4px;padding:4px;border-radius:999px;
+  background:rgba(244,244,244,.86);border:1px solid #b4c4c5;box-shadow:0 4px 14px rgba(32,38,39,.10);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#2b3234;
+  font:600 13px/1 "Neue Hans Kendrick","Outfit",system-ui,sans-serif;transition:opacity .2s}
+html[data-theme="dark"] .nv-prefs{background:rgba(43,50,52,.88);border-color:#585e5e;color:#f4f4f4;box-shadow:0 4px 14px rgba(0,0,0,.30)}
+.nv-prefs [role="radiogroup"]{display:flex;gap:4px}
+.nv-prefs button{appearance:none;-webkit-appearance:none;border:0;margin:0;padding:0;background:transparent;color:inherit;width:36px;height:36px;border-radius:999px;display:grid;place-items:center;cursor:pointer}
+.nv-prefs button:focus-visible{outline:2px solid #67ff56;outline-offset:2px}
+.nv-prefs button[aria-checked="true"],.nv-prefs button[aria-pressed="true"]{background:#67ff56;color:#2b3234}
+.nv-prefs svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nv-prefs i{width:1px;height:20px;background:currentColor;opacity:.25;margin:0 2px}
+@media (hover:hover){.nv-prefs button:hover:not([aria-checked="true"]):not([aria-pressed="true"]){background:rgba(127,140,141,.16)}}
+@media print{.nv-prefs{display:none}}
