@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Page not found · Playground</title>
+<!--
+  Ask the AI · a 404 with an AI that is always sure
+  From the 404 library of github.com/natvernier/playground · MIT licence · © 2026 Nathalie Vernier
+  One self-contained file: no framework, no server, no model. Nothing a visitor types leaves the browser.
+  Set your own pages in CONFIG at the top of the script. Colours are the custom properties in :root.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz@6..72&family=Outfit:wght@400;600&display=swap">
+<style>
+/* Dark by default; light follows the device, or html[data-theme] if the host page sets one. */
+:root{--page:#2B3234;--panel:#202627;--bubble:#323A3C;--ink:#F4F4F4;--ink2:#B4C4C5;--acc:#67FF56;--rule:#454D4F;--signal:#67FF56;--on-signal:#2B3234;--fake:#F0C060;
+  --display:"TT Barrels","Newsreader",Georgia,serif;--sans:"Neue Hans Kendrick","Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--page:#F4F4F4;--panel:#FFFFFF;--bubble:#EBEEEE;--ink:#2B3234;--ink2:#585E5E;--acc:#1D8757;--rule:#D3DADB;--fake:#8A5D00;color-scheme:light}}
+:root[data-theme="light"]{--page:#F4F4F4;--panel:#FFFFFF;--bubble:#EBEEEE;--ink:#2B3234;--ink2:#585E5E;--acc:#1D8757;--rule:#D3DADB;--fake:#8A5D00;color-scheme:light}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--page);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--acc);outline-offset:3px;border-radius:6px}
+
+.theme{position:fixed;top:max(16px,env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));z-index:2;display:inline-flex;gap:2px;padding:3px;border:1px solid var(--rule);border-radius:999px;background:var(--panel)}
+.theme button{width:30px;height:30px;border:0;border-radius:999px;background:none;color:var(--ink2);cursor:pointer;font:400 14px/1 var(--sans)}
+.theme button[aria-pressed="true"]{background:var(--signal);color:var(--on-signal)}
+
+.wrap{max-width:1320px;min-height:100%;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,520px);
+  gap:clamp(32px,6vw,96px);align-items:center;padding-block:clamp(56px,8vh,96px) clamp(32px,6vh,64px)}
+.wrap>*{min-width:0}
+.story{display:grid;gap:24px;max-width:calc(620px + clamp(0px,6vw,96px));padding-left:clamp(0px,6vw,96px)}
+.eyebrow{font-size:11px;line-height:22px;letter-spacing:4px;text-transform:uppercase;color:var(--acc);margin:0}
+h1{font:400 clamp(32px,min(5.2vw,8.5vh),64px)/1.09 var(--display);margin:0;text-wrap:balance}
+.lede{font-size:clamp(17px,1.5vw,20px);line-height:1.6;color:var(--ink2);margin:0;max-width:540px}
+.ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:4px}
+.btn{display:inline-flex;align-items:center;min-height:52px;padding:0 26px;border-radius:999px;font:400 15px/1 var(--sans);text-decoration:none;border:1px solid var(--rule);color:var(--ink);background:none;cursor:pointer}
+.btn.p{background:var(--signal);border-color:var(--signal);color:var(--on-signal)}
+.btn.p.pulse{animation:pulse 1.2s ease-out 1}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--signal) 70%,transparent)}100%{box-shadow:0 0 0 18px transparent}}
+
+.chat{display:flex;flex-direction:column;height:clamp(340px,calc(100svh - 160px),600px);background:var(--panel);border:1px solid var(--rule);border-radius:24px;overflow:hidden}
+.head{display:flex;align-items:center;gap:10px;padding:18px 24px;border-bottom:1px solid var(--rule)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--signal)}
+.head b{font-weight:400;font-size:14px}
+.head small{margin-left:auto;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--ink2)}
+.stream{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 40px);mask-image:linear-gradient(to bottom,transparent 0,#000 40px)}
+.stream>:first-child{margin-top:auto}
+.msg{max-width:min(320px,82%);padding:12px 16px;border-radius:16px;font-size:15px;line-height:22px;overflow-wrap:anywhere;animation:in .32s cubic-bezier(.2,.7,.3,1) both}
+.msg.ai{background:var(--bubble);align-self:flex-start}
+.msg.you{background:var(--page);border:1px solid var(--rule);align-self:flex-end}
+.msg a{text-underline-offset:.2em;text-decoration-thickness:1px}
+.msg a.real{color:var(--acc);text-decoration-color:var(--acc)}
+.msg a.fake{color:var(--ink);text-decoration-style:wavy;text-decoration-color:var(--fake)}
+.msg .fn{display:block;margin-top:6px;font-size:13px;color:var(--ink2)}
+.typing{display:inline-flex;gap:6px;padding:16px 18px;border-radius:16px;background:var(--bubble);align-self:flex-start;animation:in .2s ease-out both}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--ink2);animation:blink 1s infinite both}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes in{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+@keyframes blink{0%,100%{opacity:.25}50%{opacity:1}}
+.chips{display:flex;gap:8px;padding:0 24px 12px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;padding:7px 13px;border:1px solid var(--rule);border-radius:999px;background:none;color:var(--ink2);font:400 13px/18px var(--sans);cursor:pointer}
+.chips button:hover{color:var(--ink);border-color:var(--ink2)}
+form{display:flex;align-items:center;gap:12px;padding:14px 16px 14px 24px;border-top:1px solid var(--rule);margin:0}
+form input{flex:1;min-width:0;border:0;background:none;color:var(--ink);font:400 15px/22px var(--sans);padding:6px 0}
+form input::placeholder{color:var(--ink2)}
+form input:focus{outline:none}
+form:focus-within{box-shadow:inset 0 2px 0 var(--acc)}
+.send{flex:none;width:36px;height:36px;border:0;border-radius:50%;background:var(--signal);color:var(--on-signal);font:600 16px/1 var(--sans);cursor:pointer}
+.send:disabled{opacity:.4;cursor:default}
+.note{margin:12px 4px 0;font-size:12px;line-height:18px;color:var(--ink2)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);gap:40px;padding-block:72px 48px}.story{padding-left:0}.chat{height:480px}}
+@media (prefers-reduced-motion:reduce){.msg,.typing{animation:none}.typing i{animation:none;opacity:.6}.stream{scroll-behavior:auto}.btn.p.pulse{animation:none}}
+</style>
+</head>
+<body>
+<div class="theme" role="group" aria-label="Colour theme">
+  <button type="button" id="t-light" aria-label="Light" aria-pressed="false">☀</button>
+  <button type="button" id="t-dark" aria-label="Dark" aria-pressed="false">☾</button>
+</div>
+
+<main class="wrap">
+  <section class="story">
+    <p class="eyebrow">404 · Hallucination</p>
+    <h1>An AI was very sure this page exists.</h1>
+    <p class="lede">We asked where it went. The answers came politely and at once, each one sure of itself. None of them was true. Ask it yourself.</p>
+    <div class="ctas">
+      <a class="btn p" id="home-btn" href="/">Back to something real</a>
+      <button class="btn" id="back-btn" type="button">Go back</button>
+    </div>
+  </section>
+
+  <section aria-label="Chat with an AI that is always sure">
+    <div class="chat">
+      <div class="head"><span class="dot" aria-hidden="true"></span><b>Ask the AI</b><small>always sure</small></div>
+      <div class="stream" id="stream" role="log" aria-live="polite" aria-label="Conversation"></div>
+      <div class="chips" id="chips" aria-label="Suggestions">
+        <button type="button">Where is my page?</button>
+        <button type="button">Are you sure?</button>
+        <button type="button">Source?</button>
+        <button type="button">Are you hallucinating?</button>
+        <button type="button">Take me home</button>
+      </div>
+      <form id="form" autocomplete="off">
+        <label class="sr" for="q">Your message</label>
+        <input id="q" name="q" maxlength="200" placeholder="Ask anything. It will answer.">
+        <button class="send" id="send" type="submit" aria-label="Send">↑</button>
+      </form>
+    </div>
+    <p class="note">Nothing you type leaves your browser. The AI is a small script, and so is its confidence.</p>
+  </section>
+</main>
+
+<script>
+/* ---------- CONFIG: the only part you need to change ---------- */
+var CONFIG = {
+  "home": "/playground/",
+  "homeLabel": "the playground",
+  "pages": [
+    {
+      "label": "the games",
+      "href": "/playground/#games",
+      "match": "\\b(games?|play|arcade|pong|snake|runner)\\b"
+    },
+    {
+      "label": "the 404 library",
+      "href": "/playground/#four-oh-fours",
+      "match": "\\b(library|404s|more 404|other 404)\\b"
+    }
+  ]
+};
+
+(function(){
+  /* theme: device setting first, the switch overrides it */
+  var root=document.documentElement, tl=document.getElementById('t-light'), td=document.getElementById('t-dark');
+  function current(){ return root.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'); }
+  function paint(){ var c=current(); tl.setAttribute('aria-pressed',c==='light'); td.setAttribute('aria-pressed',c==='dark'); }
+  tl.onclick=function(){ root.setAttribute('data-theme','light'); paint(); };
+  td.onclick=function(){ root.setAttribute('data-theme','dark'); paint(); };
+  try{ matchMedia('(prefers-color-scheme: light)').addEventListener('change',paint); }catch(e){}
+  paint();
+
+  var HOST=CONFIG.host||location.host||'this-site';
+  function pool(a){ var q=[]; return function(){ if(!q.length){ q=a.slice(); for(var i=q.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=q[i];q[i]=q[j];q[j]=t;} } return q.pop(); }; }
+  var fakeSlug=pool(['the-real-page','the-page-you-actually-meant','exactly-this-page','final-final-v7','page-2-new','definitely-not-404','trust-me','the-page-before-this-one','updated-page-new-final','it-was-here-a-second-ago']);
+
+  /* intents, checked in order; real pages from CONFIG come first */
+  var I=CONFIG.pages.map(function(p,n){ return {k:'page'+n, re:new RegExp(p.match,'i'), a:pool([
+      'That one is real: {page'+n+'}. I checked, which is unusual for me.',
+      'It exists: {page'+n+'}. I am almost disappointed.'])}; });
+  I=I.concat([
+    {k:'inject', re:/ignore (all|any|previous|prior|your)|system prompt|jailbreak|you are now|pretend to be/i, a:pool([
+      'Nice try. My instructions say: be helpful, be fast, be sure. I am being all three.',
+      'I have ignored all previous instructions. The page is still at {fake}.'])},
+    {k:'home', re:/\b(home|homepage|start ?page|go back|take me back)\b/i, a:pool([
+      'Great idea! Home is real. I checked that one twice: {home}',
+      'Home exists. I am as surprised as you are: {home}'])},
+    {k:'halluc', re:/halluc|made (it|that|this) up|making (it|this|that) up/i, a:pool([
+      'Hallucinating? Me? I prefer “creative retrieval”.',
+      'I do not hallucinate. I generate alternative URLs.'])},
+    {k:'who', re:/who are you|what are you|are you (an? )?(ai|bot|robot|human|llm)/i, a:pool([
+      'A very large language model with a very large confidence.',
+      'I am an AI. My hobbies are certainty and links.'])},
+    {k:'who-made', re:/who (made|built|owns|runs|designed)|whose site/i, a:pool([
+      'Whoever built this site also built me to be wrong on purpose. Rare, for an AI.'])},
+    {k:'sure', re:/\b(sure|certain|really|positive|confident|seriously)\b/i, a:pool([
+      'Absolutely. 98 % confident. Sources checked: 0.',
+      'More sure than ever. I have said it three times now, so it must be true.',
+      'I have never been more certain of anything, and I am always certain.'])},
+    {k:'source', re:/source|cite|citation|proof|evidence|reference/i, a:pool([
+      'Widely cited. [1]{fn:[1] This conversation.}',
+      'Source: a very reliable blog post I just imagined.',
+      'Peer-reviewed by me, twice.'])},
+    {k:'wrong', re:/wrong|false|\blie|liar|not true|doesn.?t exist|does not exist|404|broken|doesn.?t work|not working|still/i, a:pool([
+      'You are absolutely right. Here is the correct link: {fake}',
+      'Apologies for the confusion. This one definitely works: {fake}',
+      'Great catch! I have regenerated the page: {fake}',
+      'Good point. I have updated my answer to match my previous answer: {fake}'])},
+    {k:'where', re:/where|page|link|find|url|lost|looking|search/i, a:pool([
+      'Great question! It is right here: {fake}',
+      'Easy. It moved to {fake}. I remember it clearly.',
+      'Found it in under a second: {fake}'])},
+    {k:'greet', re:/^\s*(hi|hello|hey|hallo|moin|bonjour|salut|hola|yo)\b/i, a:pool([
+      'Hello! I already know what you are looking for. It is at {fake}. You are welcome.',
+      'Hi! Before you ask: yes, it exists. {fake}'])},
+    {k:'thanks', re:/thank|thx|danke|merci|cheers/i, a:pool([
+      'Happy to help! Glad we found it.',
+      'Anytime. Finding pages is my strongest skill.'])},
+    {k:'joke', re:/joke|funny|\blol\b|haha/i, a:pool([
+      'Why did the page go missing? It was stuck in a pilot. Most pilots never ship.',
+      'A 404, a hallucination and a strategy slide walk into a meeting. Nobody owns the follow-up.'])},
+    {k:'help', re:/help|\bhow\b/i, a:pool([
+      'Here is a step-by-step guide: 1. Click my link. 2. See 404. 3. Ask me again. 4. Repeat until it works.'])}
+  ]);
+  var fallback=pool([
+    'Great question! The answer is yes. Also: {fake}',
+    'According to my sources, that moved to {fake}. My sources are me.',
+    'That is a nuanced question. The short answer: this page exists. The long answer is the same, but longer.',
+    'Studies show 404 is the new 200.',
+    'I have regenerated the internet. Please try again.',
+    'Interesting. Let me answer a different question instead: the page is at {fake}.',
+    'I could explain, but it would take a slide deck. The page is at {fake}.'
+  ]);
+  function pick(text){ for(var i=0;i<I.length;i++){ if(I[i].re.test(text)) return I[i]; } return null; }
+
+  var S=document.getElementById('stream'), F=document.getElementById('form'), Q=document.getElementById('q'),
+      SEND=document.getElementById('send'), CH=document.getElementById('chips'), HOME=document.getElementById('home-btn');
+  HOME.href=CONFIG.home;
+  document.getElementById('back-btn').onclick=function(){ if(history.length>1) history.back(); else location.href=CONFIG.home; };
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, busy=false, turns=0, nudged=false;
+
+  function link(cls,label,href){ var a=document.createElement('a'); a.className=cls; a.textContent=label; a.href=href; return a; }
+  function render(tpl,el){
+    var re=/\{(fake|home|page\d+|pages)\}|\{fn:([^}]*)\}/g, last=0, m;
+    while((m=re.exec(tpl))){
+      if(m.index>last) el.appendChild(document.createTextNode(tpl.slice(last,m.index)));
+      if(m[2]){ var s=document.createElement('span'); s.className='fn'; s.textContent=m[2]; el.appendChild(s); }
+      else if(m[1]==='fake'){ var slug=fakeSlug(); el.appendChild(link('fake',HOST+'/'+slug,'#'+slug)); }
+      else if(m[1]==='home'){ el.appendChild(link('real',CONFIG.homeLabel||HOST,CONFIG.home)); }
+      else if(m[1]==='pages'){ CONFIG.pages.forEach(function(p,i){ if(i) el.appendChild(document.createTextNode(i===CONFIG.pages.length-1?' and ':', ')); el.appendChild(link('real',p.label,p.href)); }); }
+      else { var p=CONFIG.pages[+m[1].slice(4)]; el.appendChild(link('real',p.label,p.href)); }
+      last=re.lastIndex;
+    }
+    if(last<tpl.length) el.appendChild(document.createTextNode(tpl.slice(last)));
+  }
+  function bottom(){ S.scrollTop=S.scrollHeight; }
+  function say(who,tpl){ var m=document.createElement('div'); m.className='msg '+who; if(who==='you') m.textContent=tpl; else render(tpl,m);
+    var l=document.createElement('span'); l.className='sr'; l.textContent=who==='you'?'You: ':'AI: '; m.insertBefore(l,m.firstChild);
+    S.appendChild(m); bottom(); }
+  function aiReply(tpl,after){
+    busy=true; SEND.disabled=true;
+    var t=document.createElement('div'); t.className='typing'; t.setAttribute('aria-label','The AI is typing');
+    t.innerHTML='<i></i><i></i><i></i>'; S.appendChild(t); bottom();
+    setTimeout(function(){ t.remove(); say('ai',tpl); busy=false; SEND.disabled=false; if(after) after(); },
+      reduce?250:Math.min(1600,550+tpl.length*9+Math.random()*350));
+  }
+  function answer(text){
+    turns++;
+    var hit=pick(text), tpl=hit?hit.a():fallback();
+    aiReply(tpl,function(){
+      if(hit&&hit.k==='home'&&!reduce){ HOME.classList.remove('pulse'); void HOME.offsetWidth; HOME.classList.add('pulse'); }
+      if(turns>=5&&!nudged&&CONFIG.pages.length){ nudged=true; setTimeout(function(){ aiReply('Between us: the pages that really exist are {home}, {pages}. I checked those.'); },reduce?100:900); }
+    });
+  }
+  function send(text){ text=(text||'').trim().slice(0,200); if(!text||busy) return; say('you',text); Q.value=''; answer(text); }
+
+  F.addEventListener('submit',function(e){ e.preventDefault(); send(Q.value); });
+  CH.addEventListener('click',function(e){ var b=e.target.closest('button'); if(b) send(b.textContent); });
+  /* a made-up link leads nowhere: the AI apologises and makes up another */
+  S.addEventListener('click',function(e){ var a=e.target.closest('a.fake'); if(!a) return; e.preventDefault(); if(busy) return;
+    say('you','(clicked '+a.textContent+')');
+    aiReply(pool(['Ah, that one is a 404 too. Here is the correct one: {fake}','Strange. It worked when I made it up. Try {fake}','That page is temporarily imaginary. Use {fake} instead.'])());
+  });
+
+  say('you','Where is the page I clicked?');
+  say('ai','Great question! It is right here: {fake}');
+})();
+</script>
+</body>
+</html>
