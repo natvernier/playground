@@ -1,6 +1,6 @@
 # Playground
 
-Games and interaction pieces from [natvernier.com](https://www.natvernier.com), by Nathalie Vernier.
+Games, interaction pieces and 404 pages from [natvernier.com](https://www.natvernier.com), by Nathalie Vernier.
 Vanilla JavaScript, no frameworks, no build step. Every piece works in light and dark, with keyboard and touch, and respects `prefers-reduced-motion`.
 
 **Live gallery:** https://natvernier.github.io/playground/
@@ -17,6 +17,8 @@ Vanilla JavaScript, no frameworks, no build step. Every piece works in light and
 | **Interactions** | | |
 | [Theme + sound pill](interactions/theme-sound-pill/) | One switch for light, dark and sound, shared by every page | [see it](https://natvernier.github.io/playground/interactions/theme-sound-pill/) |
 | [Jargon flythrough](interactions/jargon-flythrough/) | Words fly past the camera; a warm light follows the cursor | [see it](https://natvernier.github.io/playground/interactions/jargon-flythrough/) |
+| **404s** · [the library](404/) | | |
+| [No. 001 · Ask the AI](404/ask-the-ai/) | An AI that is always sure, wrong about the missing page every time | [see it](https://natvernier.github.io/playground/404/ask-the-ai/) |
 
 ## Layout
 
@@ -24,6 +26,8 @@ Vanilla JavaScript, no frameworks, no build step. Every piece works in light and
 core/            the shared game engine (nvg-core.js) and its styles (nvg.css)
 games/<name>/    index.html + content.js (the words) + game.js (the game)
 interactions/    standalone pieces, each with its own demo page
+404/<name>/       one 404 page per folder, a single self-contained index.html
+404.html         this site's own 404: the newest entry of the library
 index.html       the gallery
 ```
 
